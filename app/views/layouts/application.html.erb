@@ -8,9 +8,34 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <style>
+    .waiting_on {
+      background-color: lightgoldenrodyellow;
+    }
+
+    .received {
+      background-color: lightgreen;
+    }
+    </style>
   </head>
 
   <body>
+
+    <nav>
+        <% if current_user != nil %>
+        <a href="/">Delivery Tracker</a>
+        |
+        <a href="/users/edit">Edit profile</a>
+        |
+        <a href="/users/sign_out">Sign out</a>
+        <% else %>
+        <a href="/users/sign_up">Sign up</a>
+        |
+        <a href="/users/sign_in">Sign in</a>
+        <% end %>
+    </nav>
+    </nav>
+
   <% if notice.present? %>
       <div style="color: green">
         <%= notice %>

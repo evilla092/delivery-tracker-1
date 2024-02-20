@@ -22,12 +22,14 @@ class DeliveriesController < ApplicationController
     the_delivery.description = params.fetch("query_description")
     the_delivery.supposed_to_arrive_on = params.fetch("query_supposed_to_arrive_on")
     the_delivery.details = params.fetch("query_details")
+    the_delivery.user_id = current_user.id
+    the_delivery.arrived = false
 
     if the_delivery.valid?
       the_delivery.save
-      redirect_to("/deliveries", { :notice => "Delivery created successfully." })
+      redirect_to("/index", { :notice => "Added to list" })
     else
-      redirect_to("/deliveries", { :alert => the_delivery.errors.full_messages.to_sentence })
+      redirect_to("/index", { :alert => the_delivery.errors.full_messages.to_sentence })
     end
   end
 
@@ -45,6 +47,14 @@ class DeliveriesController < ApplicationController
     else
       redirect_to("/deliveries/#{the_delivery.id}", { :alert => the_delivery.errors.full_messages.to_sentence })
     end
+  end
+
+  def received
+    the_id = params.fetch("path_id")
+    the_delivery = Delivery.where(id: the_id).first
+    the_delivery.arrived = true
+    the_delivery.save
+    redirect_to("/")
   end
 
   def destroy
